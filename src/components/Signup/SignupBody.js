@@ -16,7 +16,9 @@ const formikSchema = Yup.object({
       "Invalid email format"
     )
     .required("Email is required"),
-  password: Yup.string().required("password is required"),
+  password: Yup.string()
+    .min(5, "Password must be 5 characters long")
+    .required("password is required"),
 });
 
 export default function SignupBody() {
@@ -49,12 +51,9 @@ export default function SignupBody() {
         email: values?.email,
         password: values?.password,
         role: role,
-        timeZone:values?.timeZone
+        timeZone: values?.timeZone,
       };
-      const userData = await axios.post(
-        `${baseUrl}/api/user`,
-        formData
-      );
+      const userData = await axios.post(`${baseUrl}/api/user`, formData);
       if (userData.status) {
         navigate("/home");
       }
